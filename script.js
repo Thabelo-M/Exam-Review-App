@@ -56,7 +56,7 @@ function showResults() {
     sorted.forEach(([question, count]) => {
       const div = document.createElement("div");
       div.className = "question-item";
-      div.textContent = `${question} — (${count} votes)`;
+      div.textContent = `${question} - (${count} votes)`;
       resultsDiv.appendChild(div);
     });
 
