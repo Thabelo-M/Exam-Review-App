@@ -10,78 +10,89 @@ const firebaseConfig = {
   measurementId: "G-8FVXZ4LBSQ"
 };
 
-// Initialize Firebase
+// Initialise Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
 // ==================== FUNCTIONS ====================
 function submitSingleQuestion() {
-  const username = document.getElementById('username').value.trim();
-  const question = document.getElementById('questionInput').value.trim();
+  const username = document.getElementById("username").value.trim();
+  const question = document.getElementById("questionInput").value.trim();
 
-  if (!username) { alert("Please enter your name."); return; }
-  if (!question) { alert("Please enter a question."); return; }
+  if (!username) {
+    alert("Please enter your name.");
+    return;
+  }
+  if (!question) {
+    alert("Please enter a question.");
+    return;
+  }
 
-  db.ref('submissions').push({
-    username: username,
-    question: question
-  });
+  // Save question to Firebase
+  db.ref("submissions").push({ username, question });
 
-  document.getElementById('questionInput').value = '';
+  // Clear input
+  document.getElementById("questionInput").value = "";
+  showResults();
 }
 
-// --- LIVE RESULTS ---
-db.ref('submissions').on('value', snapshot => {
-  const data = snapshot.val() || {};
-  const counts = {};
+function showResults() {
+  db.ref("submissions").once("value", (snapshot) => {
+    const data = snapshot.val() || {};
+    const counts = {};
 
-  Object.values(data).forEach(sub => {
-    counts[sub.question] = (counts[sub.question] || 0) + 1;
+    // Count votes
+    Object.values(data).forEach((sub) => {
+      counts[sub.question] = (counts[sub.question] || 0) + 1;
+    });
+
+    // Sort by most votes
+    const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+
+    // Display results
+    const resultsDiv = document.getElementById("results");
+    resultsDiv.innerHTML = "";
+
+    sorted.forEach(([question, count]) => {
+      const div = document.createElement("div");
+      div.className = "question-item";
+      div.textContent = `${question} — (${count} votes)`;
+      resultsDiv.appendChild(div);
+    });
+
+    document.getElementById("results-section").style.display = "block";
   });
-
-  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
-  const resultsDiv = document.getElementById('results');
-  resultsDiv.innerHTML = '';
-
-  sorted.forEach(([question, count]) => {
-    const div = document.createElement('div');
-    div.className = 'question-item';
-    div.textContent = `${question} — (${count} votes)`;
-    resultsDiv.appendChild(div);
-  });
-
-  document.getElementById('results-section').style.display = 'block';
-});
-
-// --- LIVE LEADERBOARD ---
-db.ref('submissions').on('value', snapshot => {
-  const data = snapshot.val() || {};
-  const counts = {};
-
-  Object.values(data).forEach(sub => {
-    counts[sub.question] = (counts[sub.question] || 0) + 1;
-  });
-
-  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
-  const leaderboardDiv = document.getElementById('leaderboard');
-  leaderboardDiv.innerHTML = '';
-
-  sorted.forEach(([question, count], index) => {
-    const div = document.createElement('div');
-    div.className = 'question-item';
-    div.textContent = `#${index + 1}: ${question} — (${count} votes)`;
-    leaderboardDiv.appendChild(div);
-  });
-});
+}
 
 function showLeaderboard() {
-  document.getElementById('form-section').style.display = 'none';
-  document.getElementById('results-section').style.display = 'none';
-  document.getElementById('leaderboard-section').style.display = 'block';
+  db.ref("submissions").once("value", (snapshot) => {
+    const data = snapshot.val() || {};
+    const counts = {};
+
+    Object.values(data).forEach((sub) => {
+      counts[sub.question] = (counts[sub.question] || 0) + 1;
+    });
+
+    const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+
+    const leaderboardDiv = document.getElementById("leaderboard");
+    leaderboardDiv.innerHTML = "";
+
+    sorted.forEach(([question, count], index) => {
+      const div = document.createElement("div");
+      div.className = "question-item";
+      div.textContent = `#${index + 1}: ${question} — (${count} votes)`;
+      leaderboardDiv.appendChild(div);
+    });
+
+    document.getElementById("form-section").style.display = "none";
+    document.getElementById("results-section").style.display = "none";
+    document.getElementById("leaderboard-section").style.display = "block";
+  });
 }
 
 function hideLeaderboard() {
-  document.getElementById('leaderboard-section').style.display = 'none';
-  document.getElementById('form-section').style.display = 'block';
-  document.getElementById('results-section').style.display = 'block';
+  document.getElementById("leaderboard-section").style.display = "none";
+  document.getElementById("form-section").style.display = "block";
+  document.getElementById("results-section").style.display = "block";
 }
