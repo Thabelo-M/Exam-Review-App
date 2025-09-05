@@ -1,34 +1,42 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Segoe UI", Arial, sans-serif;
   background: #f0f6ff;
   color: #222;
   display: flex;
   justify-content: center;
   align-items: flex-start;
   padding: 20px;
+  margin: 0;
 }
 
 .container {
   width: 100%;
   max-width: 700px;
-  background: white;
-  padding: 20px;
+  background: #fff;
+  padding: 25px;
   border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
 }
 
 h1, h2 {
   color: #0057d9;
   text-align: center;
+  margin-bottom: 15px;
 }
 
 textarea, input {
   width: 100%;
-  padding: 10px;
-  margin: 10px 0;
+  padding: 12px;
+  margin: 8px 0;
   border-radius: 8px;
   border: 1px solid #ccc;
-  font-size: 14px;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+textarea:focus, input:focus {
+  border-color: #0057d9;
 }
 
 button {
@@ -41,16 +49,22 @@ button {
   width: 100%;
   font-size: 16px;
   margin-top: 10px;
+  transition: background 0.3s, transform 0.1s;
 }
 
 button:hover {
   background: #003f9c;
 }
 
+button:active {
+  transform: scale(0.98);
+}
+
 .question-item {
   background: #e9f1ff;
-  margin: 5px 0;
+  margin: 6px 0;
   padding: 12px;
   border-radius: 10px;
   font-size: 15px;
+  border-left: 5px solid #0057d9;
 }
