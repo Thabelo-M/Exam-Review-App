@@ -1,7 +1,8 @@
+/* ================= BODY & CONTAINER ================= */
 body {
   font-family: Arial, sans-serif;
-  background: #f0f6ff;
-  color: #101820;
+  background: #f0f6ff; /* light background */
+  color: #101820; /* dark grey body text */
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -17,23 +18,26 @@ body {
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
+/* ================= HEADINGS ================= */
 h1, h2 {
-  color: #041E42; /* Primary Blue */
+  color: #041E42; /* primary dark blue */
   text-align: center;
 }
 
+/* ================= INPUTS ================= */
 textarea, input {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
   border-radius: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid #63666A; /* neutral grey border */
   font-size: 14px;
-  color: #101820;
+  color: #101820; /* dark grey text */
 }
 
+/* ================= BUTTONS ================= */
 button {
-  background: #041E42; /* Primary Blue */
+  background: #041E42; /* primary blue */
   color: white;
   padding: 12px;
   border: none;
@@ -46,27 +50,28 @@ button {
 }
 
 button:hover {
-  background: #D69A2D; /* Gold on hover */
+  background: #D69A2D; /* gold on hover */
 }
 
 button#clearBtn {
-  background: #da291c; /* Red for danger actions */
+  background: #da291c; /* red for danger actions */
 }
 
 button#clearBtn:hover {
-  background: #a81f15; /* Darker red */
+  background: #a81f15; /* darker red */
 }
 
+/* ================= QUESTION ITEMS ================= */
 .question-item {
-  background: #e9f1ff;
+  background: #f7faff; /* light contrast */
   margin: 5px 0;
   padding: 12px;
   border-radius: 10px;
   font-size: 15px;
-  color: #63666A; /* Neutral text */
+  color: #63666A; /* neutral grey text */
 }
 
-/* ===== LEADERBOARD TABLE STYLES ===== */
+/* ================= LEADERBOARD TABLE ================= */
 #leaderboard-table {
   width: 100%;
   border-collapse: collapse;
@@ -76,11 +81,11 @@ button#clearBtn:hover {
 #leaderboard-table th,
 #leaderboard-table td {
   padding: 10px;
-  border-bottom: 1px solid #63666A; /* Neutral divider */
+  border-bottom: 1px solid #63666A; /* neutral grey border */
 }
 
 #leaderboard-table tbody tr:nth-child(even) {
-  background-color: #f7faff; /* light alternate row */
+  background-color: #f7faff; /* alternating row */
 }
 
 #leaderboard-table tbody tr:hover {
@@ -88,8 +93,25 @@ button#clearBtn:hover {
 }
 
 #leaderboard-table th {
-  background-color: #041E42; /* Primary Blue header */
+  background-color: #041E42; /* primary dark blue header */
   color: #ffffff;
   text-align: left;
   font-weight: bold;
+}
+
+/* ================= OPTIONAL: TOP 3 HIGHLIGHT ================= */
+#leaderboard-table tbody tr.top-1 {
+  background-color: #D69A2D; /* gold */
+  color: #041E42;
+  font-weight: bold;
+}
+
+#leaderboard-table tbody tr.top-2 {
+  background-color: #9873ac; /* optional purple for 2nd */
+  color: #ffffff;
+}
+
+#leaderboard-table tbody tr.top-3 {
+  background-color: #0077cf; /* optional blue for 3rd */
+  color: #ffffff;
 }
