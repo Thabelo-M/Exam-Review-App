@@ -1,7 +1,7 @@
 body {
   font-family: Arial, sans-serif;
   background: #f0f6ff;
-  color: #222;
+  color: #101820;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -18,7 +18,7 @@ body {
 }
 
 h1, h2 {
-  color: #0057d9;
+  color: #041E42; /* Primary Blue */
   text-align: center;
 }
 
@@ -29,10 +29,11 @@ textarea, input {
   border-radius: 8px;
   border: 1px solid #ccc;
   font-size: 14px;
+  color: #101820;
 }
 
 button {
-  background: #0057d9;
+  background: #041E42; /* Primary Blue */
   color: white;
   padding: 12px;
   border: none;
@@ -41,10 +42,19 @@ button {
   width: 100%;
   font-size: 16px;
   margin-top: 10px;
+  transition: background 0.3s ease;
 }
 
 button:hover {
-  background: #003f9c;
+  background: #D69A2D; /* Gold on hover */
+}
+
+button#clearBtn {
+  background: #da291c; /* Red for danger actions */
+}
+
+button#clearBtn:hover {
+  background: #a81f15; /* Darker red */
 }
 
 .question-item {
@@ -53,6 +63,7 @@ button:hover {
   padding: 12px;
   border-radius: 10px;
   font-size: 15px;
+  color: #63666A; /* Neutral text */
 }
 
 /* ===== LEADERBOARD TABLE STYLES ===== */
@@ -65,7 +76,7 @@ button:hover {
 #leaderboard-table th,
 #leaderboard-table td {
   padding: 10px;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #63666A; /* Neutral divider */
 }
 
 #leaderboard-table tbody tr:nth-child(even) {
@@ -73,12 +84,12 @@ button:hover {
 }
 
 #leaderboard-table tbody tr:hover {
-  background-color: #e1eaff; /* hover effect */
+  background-color: #e9f1ff; /* hover effect */
 }
 
 #leaderboard-table th {
-  background-color: #041E42; /* dark header */
-  color: #fff;
+  background-color: #041E42; /* Primary Blue header */
+  color: #ffffff;
   text-align: left;
   font-weight: bold;
 }
