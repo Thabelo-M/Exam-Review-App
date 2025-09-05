@@ -10,13 +10,13 @@ const firebaseConfig = {
   measurementId: "G-8FVXZ4LBSQ"
 };
 
-// Initialise Firebase
+// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
 // ==================== FUNCTIONS ====================
 
-// Submit a question (max 20 per user)
+// Submit a question (max 35 per user)
 function submitSingleQuestion() {
   const username = document.getElementById("username").value.trim();
   const question = document.getElementById("questionInput").value.trim();
@@ -44,7 +44,7 @@ function submitSingleQuestion() {
   });
 }
 
-// Show progress/results
+// Show progress/results in a simple table-like display
 function showResults() {
   db.ref("submissions").once("value", snapshot => {
     const data = snapshot.val() || {};
@@ -58,6 +58,7 @@ function showResults() {
     const resultsDiv = document.getElementById("results");
     resultsDiv.innerHTML = '';
 
+    // Display as simple table
     sorted.forEach(([question, count]) => {
       const div = document.createElement("div");
       div.className = "question-item";
@@ -69,7 +70,7 @@ function showResults() {
   });
 }
 
-// Show leaderboard
+// Show leaderboard in table format
 function showLeaderboard() {
   db.ref("submissions").once("value", snapshot => {
     const data = snapshot.val() || {};
@@ -80,14 +81,25 @@ function showLeaderboard() {
     });
 
     const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
-    const leaderboardDiv = document.getElementById("leaderboard");
-    leaderboardDiv.innerHTML = '';
+    const leaderboardTbody = document.getElementById("leaderboard");
+    leaderboardTbody.innerHTML = '';
 
     sorted.forEach(([question, count], index) => {
-      const div = document.createElement("div");
-      div.className = "question-item";
-      div.textContent = `#${index + 1}: ${question} - (${count} votes)`; // small dash
-      leaderboardDiv.appendChild(div);
+      const tr = document.createElement("tr");
+
+      const tdQuestion = document.createElement("td");
+      tdQuestion.textContent = `#${index + 1}: ${question}`;
+      tdQuestion.style.padding = "8px";
+
+      const tdVotes = document.createElement("td");
+      tdVotes.textContent = count;
+      tdVotes.style.textAlign = "center";
+      tdVotes.style.padding = "8px";
+
+      tr.appendChild(tdQuestion);
+      tr.appendChild(tdVotes);
+
+      leaderboardTbody.appendChild(tr);
     });
 
     document.getElementById("form-section").style.display = "none";
@@ -96,7 +108,7 @@ function showLeaderboard() {
   });
 }
 
-// Hide leaderboard and go back
+// Hide leaderboard and return to form/results
 function hideLeaderboard() {
   document.getElementById("leaderboard-section").style.display = "none";
   document.getElementById("form-section").style.display = "block";
