@@ -18,8 +18,8 @@
       <h2>Submit Your Questions</h2>
       <input type="text" id="username" placeholder="Enter your name" required>
       <textarea id="questionInput" rows="3" placeholder="Enter your question here..."></textarea>
-      <button type="button" onclick="submitSingleQuestion()">Submit Question</button>
-      <button type="button" onclick="showLeaderboard()" style="background:#28a745; margin-top:15px;">View Final Leaderboard</button>
+      <button id="submitBtn" type="button">Submit Question</button>
+      <button id="leaderboardBtn" type="button" style="background:#28a745; margin-top:15px;">View Final Leaderboard</button>
     </div>
 
     <div id="results-section" style="display:none;">
@@ -30,11 +30,20 @@
     <div id="leaderboard-section" style="display:none;">
       <h2>Final Leaderboard</h2>
       <div id="leaderboard"></div>
-      <button type="button" onclick="hideLeaderboard()">Back</button>
+      <button id="backBtn" type="button">Back</button>
     </div>
   </div>
 
   <!-- Load your custom JS last -->
   <script src="script.js"></script>
+
+  <script>
+    // Attach event listeners AFTER DOM is loaded
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("submitBtn").addEventListener("click", submitSingleQuestion);
+      document.getElementById("leaderboardBtn").addEventListener("click", showLeaderboard);
+      document.getElementById("backBtn").addEventListener("click", hideLeaderboard);
+    });
+  </script>
 </body>
 </html>
