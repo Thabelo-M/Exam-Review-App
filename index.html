@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exam Review App</title>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Exam Review App</h1>
+
+    <div id="form-section">
+      <h2>Submit Your Questions</h2>
+      <input type="text" id="username" placeholder="Enter your name" required>
+      <textarea id="questionInput" rows="3" placeholder="Enter your question here..."></textarea>
+      <button onclick="submitSingleQuestion()">Submit Question</button>
+      <button onclick="showLeaderboard()" style="background:#28a745; margin-top:15px;">View Final Leaderboard</button>
+    </div>
+
+    <div id="results-section" style="display:none;">
+      <h2>Your Progress</h2>
+      <div id="results"></div>
+    </div>
+
+    <div id="leaderboard-section" style="display:none;">
+      <h2>Final Leaderboard</h2>
+      <div id="leaderboard"></div>
+      <button onclick="hideLeaderboard()">Back</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
