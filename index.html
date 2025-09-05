@@ -14,6 +14,7 @@
   <div class="container">
     <h1>Exam Review App</h1>
 
+    <!-- Form Section -->
     <div id="form-section">
       <h2>Submit Your Questions</h2>
       <input type="text" id="username" placeholder="Enter your name" required>
@@ -22,23 +23,33 @@
       <button id="leaderboardBtn" type="button" style="background:#28a745; margin-top:15px;">View Final Leaderboard</button>
     </div>
 
+    <!-- Results Section -->
     <div id="results-section" style="display:none;">
       <h2>Your Progress</h2>
       <div id="results"></div>
     </div>
 
+    <!-- Leaderboard Section (Table) -->
     <div id="leaderboard-section" style="display:none;">
       <h2>Final Leaderboard</h2>
-      <div id="leaderboard"></div>
-      <button id="backBtn" type="button">Back</button>
+      <table id="leaderboard-table" style="width:100%; border-collapse: collapse;">
+        <thead>
+          <tr>
+            <th style="text-align:left; border-bottom:2px solid #041E42;">Question</th>
+            <th style="width:80px; text-align:center; border-bottom:2px solid #041E42;">Votes</th>
+          </tr>
+        </thead>
+        <tbody id="leaderboard"></tbody>
+      </table>
+      <button id="backBtn" type="button" style="margin-top:15px;">Back</button>
     </div>
   </div>
 
   <!-- Load your custom JS last -->
   <script src="script.js"></script>
 
+  <!-- Attach event listeners AFTER DOM is loaded -->
   <script>
-    // Attach event listeners AFTER DOM is loaded
     document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("submitBtn").addEventListener("click", submitSingleQuestion);
       document.getElementById("leaderboardBtn").addEventListener("click", showLeaderboard);
