@@ -15,48 +15,53 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
 // ==================== FUNCTIONS ====================
+
+// Submit a question (max 20 per user)
 function submitSingleQuestion() {
   const username = document.getElementById("username").value.trim();
   const question = document.getElementById("questionInput").value.trim();
 
-  if (!username) {
-    alert("Please enter your name.");
-    return;
+  if (!username) { 
+    alert("Please enter your name."); 
+    return; 
   }
-  if (!question) {
-    alert("Please enter a question.");
-    return;
+  if (!question) { 
+    alert("Please enter a question."); 
+    return; 
   }
 
-  // Save question to Firebase
-  db.ref("submissions").push({ username, question });
+  // Check current number of questions by this user
+  db.ref("submissions").orderByChild("username").equalTo(username).once("value", snapshot => {
+    if (snapshot.numChildren() >= 35) {
+      alert("You have reached the maximum of 35 questions.");
+      return;
+    }
 
-  // Clear input
-  document.getElementById("questionInput").value = "";
-  showResults();
+    // Save the question
+    db.ref("submissions").push({ username, question });
+    document.getElementById("questionInput").value = "";
+    showResults();
+  });
 }
 
+// Show progress/results
 function showResults() {
-  db.ref("submissions").once("value", (snapshot) => {
+  db.ref("submissions").once("value", snapshot => {
     const data = snapshot.val() || {};
     const counts = {};
 
-    // Count votes
-    Object.values(data).forEach((sub) => {
+    Object.values(data).forEach(sub => {
       counts[sub.question] = (counts[sub.question] || 0) + 1;
     });
 
-    // Sort by most votes
     const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
-
-    // Display results
     const resultsDiv = document.getElementById("results");
-    resultsDiv.innerHTML = "";
+    resultsDiv.innerHTML = '';
 
     sorted.forEach(([question, count]) => {
       const div = document.createElement("div");
       div.className = "question-item";
-      div.textContent = `${question} - (${count} votes)`;
+      div.textContent = `${question} - (${count} votes)`; // small dash
       resultsDiv.appendChild(div);
     });
 
@@ -64,24 +69,24 @@ function showResults() {
   });
 }
 
+// Show leaderboard
 function showLeaderboard() {
-  db.ref("submissions").once("value", (snapshot) => {
+  db.ref("submissions").once("value", snapshot => {
     const data = snapshot.val() || {};
     const counts = {};
 
-    Object.values(data).forEach((sub) => {
+    Object.values(data).forEach(sub => {
       counts[sub.question] = (counts[sub.question] || 0) + 1;
     });
 
     const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
-
     const leaderboardDiv = document.getElementById("leaderboard");
-    leaderboardDiv.innerHTML = "";
+    leaderboardDiv.innerHTML = '';
 
     sorted.forEach(([question, count], index) => {
       const div = document.createElement("div");
       div.className = "question-item";
-      div.textContent = `#${index + 1}: ${question} — (${count} votes)`;
+      div.textContent = `#${index + 1}: ${question} - (${count} votes)`; // small dash
       leaderboardDiv.appendChild(div);
     });
 
@@ -91,6 +96,7 @@ function showLeaderboard() {
   });
 }
 
+// Hide leaderboard and go back
 function hideLeaderboard() {
   document.getElementById("leaderboard-section").style.display = "none";
   document.getElementById("form-section").style.display = "block";
