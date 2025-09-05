@@ -28,57 +28,56 @@ function submitSingleQuestion() {
   });
 
   document.getElementById('questionInput').value = '';
-  showResults();
 }
 
-function showResults() {
-  db.ref('submissions').once('value', snapshot => {
-    const data = snapshot.val() || {};
-    const counts = {};
+// --- LIVE RESULTS ---
+db.ref('submissions').on('value', snapshot => {
+  const data = snapshot.val() || {};
+  const counts = {};
 
-    Object.values(data).forEach(sub => {
-      counts[sub.question] = (counts[sub.question] || 0) + 1;
-    });
-
-    const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
-    const resultsDiv = document.getElementById('results');
-    resultsDiv.innerHTML = '';
-
-    sorted.forEach(([question, count]) => {
-      const div = document.createElement('div');
-      div.className = 'question-item';
-      div.textContent = `${question} — (${count} votes)`;
-      resultsDiv.appendChild(div);
-    });
-
-    document.getElementById('results-section').style.display = 'block';
+  Object.values(data).forEach(sub => {
+    counts[sub.question] = (counts[sub.question] || 0) + 1;
   });
-}
+
+  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  const resultsDiv = document.getElementById('results');
+  resultsDiv.innerHTML = '';
+
+  sorted.forEach(([question, count]) => {
+    const div = document.createElement('div');
+    div.className = 'question-item';
+    div.textContent = `${question} — (${count} votes)`;
+    resultsDiv.appendChild(div);
+  });
+
+  document.getElementById('results-section').style.display = 'block';
+});
+
+// --- LIVE LEADERBOARD ---
+db.ref('submissions').on('value', snapshot => {
+  const data = snapshot.val() || {};
+  const counts = {};
+
+  Object.values(data).forEach(sub => {
+    counts[sub.question] = (counts[sub.question] || 0) + 1;
+  });
+
+  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  const leaderboardDiv = document.getElementById('leaderboard');
+  leaderboardDiv.innerHTML = '';
+
+  sorted.forEach(([question, count], index) => {
+    const div = document.createElement('div');
+    div.className = 'question-item';
+    div.textContent = `#${index + 1}: ${question} — (${count} votes)`;
+    leaderboardDiv.appendChild(div);
+  });
+});
 
 function showLeaderboard() {
-  db.ref('submissions').once('value', snapshot => {
-    const data = snapshot.val() || {};
-    const counts = {};
-
-    Object.values(data).forEach(sub => {
-      counts[sub.question] = (counts[sub.question] || 0) + 1;
-    });
-
-    const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
-    const leaderboardDiv = document.getElementById('leaderboard');
-    leaderboardDiv.innerHTML = '';
-
-    sorted.forEach(([question, count], index) => {
-      const div = document.createElement('div');
-      div.className = 'question-item';
-      div.textContent = `#${index + 1}: ${question} — (${count} votes)`;
-      leaderboardDiv.appendChild(div);
-    });
-
-    document.getElementById('form-section').style.display = 'none';
-    document.getElementById('results-section').style.display = 'none';
-    document.getElementById('leaderboard-section').style.display = 'block';
-  });
+  document.getElementById('form-section').style.display = 'none';
+  document.getElementById('results-section').style.display = 'none';
+  document.getElementById('leaderboard-section').style.display = 'block';
 }
 
 function hideLeaderboard() {
