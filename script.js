@@ -16,7 +16,7 @@ const db = firebase.database();
 
 // ==================== FUNCTIONS ====================
 
-// Submit a question (max 35 per user)
+// Submit a question (max 35 per user, no duplicates per user)
 function submitSingleQuestion() {
   const username = document.getElementById("username").value.trim();
   const question = document.getElementById("questionInput").value.trim();
@@ -30,14 +30,27 @@ function submitSingleQuestion() {
     return; 
   }
 
-  // Check current number of questions by this user
+  // Check current submissions by this user
   db.ref("submissions").orderByChild("username").equalTo(username).once("value", snapshot => {
+    const submissions = snapshot.val() || {};
+
+    // Max 35 per user
     if (snapshot.numChildren() >= 35) {
       alert("You have reached the maximum of 35 questions.");
       return;
     }
 
-    // Save the question
+    // Duplicate check (case-insensitive)
+    const duplicate = Object.values(submissions).some(sub => 
+      sub.question.toLowerCase() === question.toLowerCase()
+    );
+
+    if (duplicate) {
+      alert("You already submitted this question!");
+      return;
+    }
+
+    // Save the new question
     db.ref("submissions").push({ username, question });
     document.getElementById("questionInput").value = "";
     showResults();
@@ -58,7 +71,7 @@ function showResults() {
     const resultsDiv = document.getElementById("results");
     resultsDiv.innerHTML = '';
 
-    // Display as simple table
+    // Display as simple list
     sorted.forEach(([question, count]) => {
       const div = document.createElement("div");
       div.className = "question-item";
